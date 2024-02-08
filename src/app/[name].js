@@ -1,42 +1,69 @@
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { useLocalSearchParams } from "expo-router";
-import { Link, Stack } from "expo-router";
+import { Stack } from "expo-router";
 
-import exercises from "../../assets/data/exercises.json";
 import { useState } from "react";
 
+import { gql } from "graphql-request";
+import { useQuery } from "@tanstack/react-query";
+import graphqlClient from "../graphqlClient";
+import { ActivityIndicator } from "react-native-web";
+
+const nameExerciseQuery = gql`
+  query exercises($name: String) {
+    exercises(name: $name) {
+      muscle
+      type
+      equipment
+      instructions
+      name
+    }
+  }
+`;
+
 export default function ExercisePage() {
-  const [isInstructionsShow, setIsInstructionsShow] = useState(false);
   const { name } = useLocalSearchParams();
-  const exercise = exercises.find((item) => item.name === name);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["exercises", name],
+    queryFn: () => graphqlClient.request(nameExerciseQuery, { name }),
+  });
+  const [isInstructionsShow, setIsInstructionsShow] = useState(false);
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (error) {
+    return <Text>Failed to fetch data</Text>;
+  }
+
+  const exercise = data.exercises[0];
 
   if (!exercise) {
-    return (
-      <>
-        <Stack.Screen
-          options={{
-            title: "No Name",
-          }}
-        />
-        <Text>Exercise not found</Text>
-      </>
-    );
+    return <Text>Exercise not found</Text>;
   }
   return (
     <ScrollView contentContainerStyle={styles.exercisesContainer}>
       <Stack.Screen
         options={{
-          title: exercise.name,
+          title: name,
         }}
       />
       <Text style={styles.exercisesName}>{exercise.name}</Text>
       <Text style={styles.exercisesSubtitle}>
-        {exercise.muscle.toUpperCase()} | {exercise.equipment.toUpperCase()}
+        {exercise.muscle} | {exercise.equipment}
       </Text>
-      <Text  style={styles.instructions} numberOfLines={isInstructionsShow ? 0 : 4}>
+      <Text
+        style={styles.instructions}
+        numberOfLines={isInstructionsShow ? 0 : 4}
+      >
         {exercise.instructions}
       </Text>
-      <Text onPress={()=>setIsInstructionsShow(!isInstructionsShow)}  style={styles.see_more}>See {!isInstructionsShow ?"More": "Less"}</Text>
+      <Text
+        onPress={() => setIsInstructionsShow(!isInstructionsShow)}
+        style={styles.see_more}
+      >
+        See {!isInstructionsShow ? "More" : "Less"}
+      </Text>
     </ScrollView>
   );
 }
@@ -45,8 +72,8 @@ const styles = StyleSheet.create({
   exercisesContainer: {
     marginTop: 10,
     display: "flex",
-    alignSelf:"center",
-    justifyContent:"center",
+    alignSelf: "center",
+    justifyContent: "center",
     backgroundColor: "#fff",
     marginBottom: 60,
     padding: 10,
@@ -79,7 +106,7 @@ const styles = StyleSheet.create({
   see_more: {
     alignSelf: "center",
     color: "dimgrey",
- 
+
     textAlign: "center",
     fontSize: 14,
   },
