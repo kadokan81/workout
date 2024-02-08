@@ -2,7 +2,7 @@ import { StyleSheet, Text, Pressable } from "react-native";
 
 import { Link } from "expo-router";
 
-function ExercisesListItem({ item }) {
+export default function ExercisesListItem({ item }) {
   return (
     <Link href={`/${item.name}`} asChild>
       <Pressable style={styles.exercisesContainer}>
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ExercisesListItem;
+

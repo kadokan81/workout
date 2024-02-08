@@ -8,6 +8,7 @@ import { gql } from "graphql-request";
 import { useQuery } from "@tanstack/react-query";
 import graphqlClient from "../graphqlClient";
 import { ActivityIndicator } from "react-native-web";
+import { NewSetInput } from "../components/NewSetInput";
 
 const nameExerciseQuery = gql`
   query exercises($name: String) {
@@ -48,22 +49,27 @@ export default function ExercisePage() {
           title: name,
         }}
       />
-      <Text style={styles.exercisesName}>{exercise.name}</Text>
-      <Text style={styles.exercisesSubtitle}>
-        {exercise.muscle} | {exercise.equipment}
-      </Text>
-      <Text
-        style={styles.instructions}
-        numberOfLines={isInstructionsShow ? 0 : 4}
-      >
-        {exercise.instructions}
-      </Text>
-      <Text
-        onPress={() => setIsInstructionsShow(!isInstructionsShow)}
-        style={styles.see_more}
-      >
-        See {!isInstructionsShow ? "More" : "Less"}
-      </Text>
+      <View style={styles.exerciseHeader}>
+        <Text style={styles.exercisesName}>{exercise.name}</Text>
+        <Text style={styles.exercisesSubtitle}>
+          {exercise.muscle} | {exercise.equipment}
+        </Text>
+      </View>
+      <View style={styles.exerciseDescriptions}>
+        <Text
+          style={styles.instructions}
+          numberOfLines={isInstructionsShow ? 0 : 4}
+        >
+          {exercise.instructions}
+        </Text>
+        <Text
+          onPress={() => setIsInstructionsShow(!isInstructionsShow)}
+          style={styles.see_more}
+        >
+          See {!isInstructionsShow ? "More" : "Less"}
+        </Text>
+      </View>
+      <NewSetInput />
     </ScrollView>
   );
 }
@@ -74,13 +80,42 @@ const styles = StyleSheet.create({
     display: "flex",
     alignSelf: "center",
     justifyContent: "center",
+    gap: 10,
+    marginHorizontal: 8,
+
+    //shadow
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
+    elevation: 4,
+  },
+  exerciseHeader: {
     backgroundColor: "#fff",
-    marginBottom: 60,
     padding: 10,
     borderRadius: 5,
-    marginHorizontal: 10,
-    gap: 15,
-    //shadow
+    
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
+    elevation: 4,
+  },
+  exerciseDescriptions: {
+    backgroundColor: "#fff",
+    padding: 10,
+    borderRadius: 5,
+    
+    backgroundColor: "#fff",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
