@@ -7,8 +7,9 @@ import { useState } from "react";
 import { gql } from "graphql-request";
 import { useQuery } from "@tanstack/react-query";
 import graphqlClient from "../graphqlClient";
-import { ActivityIndicator } from "react-native-web";
+import { ActivityIndicator } from "react-native";
 import { NewSetInput } from "../components/NewSetInput";
+import { SetsList } from "../components/SetsList";
 
 const nameExerciseQuery = gql`
   query exercises($name: String) {
@@ -30,7 +31,7 @@ export default function ExercisePage() {
   });
   const [isInstructionsShow, setIsInstructionsShow] = useState(false);
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return <ActivityIndicator/>;
   }
 
   if (error) {
@@ -70,6 +71,7 @@ export default function ExercisePage() {
         </Text>
       </View>
       <NewSetInput />
+      <SetsList/>
     </ScrollView>
   );
 }
