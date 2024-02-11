@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { gql } from "graphql-request";
 import graphqlClient from "../graphqlClient";
 import React from "react";
-import { ActivityIndicator, StatusBar, Text, View } from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
 import { FlatList } from "react-native";
 
 const setsQuery = gql`
@@ -32,28 +32,24 @@ export const SetsList = () => {
   }
 
   const sets = data.sets.documents;
-  console.log("🚀 ~ SetsList ~ sets:", sets);
 
   return (
-    <View
-      style={{
-        display: "flex",
-        gap: 5,
-      }}
-    >
+    <View>
       <FlatList
         data={sets}
         keyExtractor={(item, ind) => item._id}
         renderItem={({ item }) => (
           <Text
             style={{
-                padding:5,
-                borderCurve:6,
+              width: "100%",
+              padding: 5,
+              paddingHorizontal: 20,
+              borderCurve: 6,
               backgroundColor: "white",
               marginVertical: 5,
             }}
           >
-            {item.reps} * {item.weight}{" "}
+            {item.exercise} {item.reps} * {item.weight}
           </Text>
         )}
       />

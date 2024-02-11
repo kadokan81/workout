@@ -9,7 +9,12 @@ input NewSet {
 }
 
 type Mutation {
-  insertSet(document: NewSet): InsertSetResponse
+  insertSet(
+    document: NewSet!
+    collection: String!
+    dataSource: String!
+    database: String!
+  ): InsertSetResponse
     @rest(
       method: POST
       endpoint: "https://eu-central-1.aws.data.mongodb-api.com/app/data-kpcvf/endpoint/data/v1/action/insertOne"
@@ -20,13 +25,13 @@ type Mutation {
           value: "tH9iqELzFAUNXpfA2svNJXRngQlfqvpgpPGQt3UiHYAbc20nUcEPBzXSsMImpv7K"
         }
       ]
-      postbody: """
-      {
-        "collection": "sets",
-        "dataSource": "Cluster0",
-        "database": "workouts",
-        "document": "{{ .Get "document" }}"
-      }
-      """
+      # postbody: """
+      # {
+      #   "collection": "sets",
+      #   "dataSource": "Cluster0",
+      #   "database": "workouts",
+      #   "document": "{{ .Get "document" }}"
+      # }
+      # """
     )
 }

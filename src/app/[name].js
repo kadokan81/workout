@@ -31,7 +31,7 @@ export default function ExercisePage() {
   });
   const [isInstructionsShow, setIsInstructionsShow] = useState(false);
   if (isLoading) {
-    return <ActivityIndicator/>;
+    return <ActivityIndicator />;
   }
 
   if (error) {
@@ -70,8 +70,10 @@ export default function ExercisePage() {
           See {!isInstructionsShow ? "More" : "Less"}
         </Text>
       </View>
-      <NewSetInput />
-      <SetsList/>
+      <NewSetInput exerciseName = {exercise.name}/>
+      <ScrollView horizontal={true} style={{}}>
+        <SetsList />
+      </ScrollView>
     </ScrollView>
   );
 }
@@ -85,7 +87,7 @@ const styles = StyleSheet.create({
     gap: 10,
     marginHorizontal: 8,
 
-    //shadow
+  
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 10,
     borderRadius: 5,
-    
+
     backgroundColor: "#fff",
     shadowColor: "#000",
     shadowOffset: {
@@ -116,7 +118,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 10,
     borderRadius: 5,
-    
+
     backgroundColor: "#fff",
     shadowColor: "#000",
     shadowOffset: {
