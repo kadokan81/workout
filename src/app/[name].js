@@ -44,37 +44,41 @@ export default function ExercisePage() {
     return <Text>Exercise not found</Text>;
   }
   return (
-    <ScrollView contentContainerStyle={styles.exercisesContainer}>
+    <View style={styles.exercisesContainer}>
       <Stack.Screen
         options={{
           title: name,
         }}
       />
-      <View style={styles.exerciseHeader}>
-        <Text style={styles.exercisesName}>{exercise.name}</Text>
-        <Text style={styles.exercisesSubtitle}>
-          {exercise.muscle} | {exercise.equipment}
-        </Text>
-      </View>
-      <View style={styles.exerciseDescriptions}>
-        <Text
-          style={styles.instructions}
-          numberOfLines={isInstructionsShow ? 0 : 4}
-        >
-          {exercise.instructions}
-        </Text>
-        <Text
-          onPress={() => setIsInstructionsShow(!isInstructionsShow)}
-          style={styles.see_more}
-        >
-          See {!isInstructionsShow ? "More" : "Less"}
-        </Text>
-      </View>
-      <NewSetInput exerciseName = {exercise.name}/>
-      <ScrollView horizontal={true} style={{}}>
-        <SetsList />
-      </ScrollView>
-    </ScrollView>
+
+      <SetsList
+        ListHeaderComponent={() => (
+          <View style={{gap:8}}>
+            <View style={styles.exerciseHeader}>
+              <Text style={styles.exercisesName}>{exercise.name}</Text>
+              <Text style={styles.exercisesSubtitle}>
+                {exercise.muscle} | {exercise.equipment}
+              </Text>
+            </View>
+            <View style={styles.exerciseDescriptions}>
+              <Text
+                style={styles.instructions}
+                numberOfLines={isInstructionsShow ? 0 : 4}
+              >
+                {exercise.instructions}
+              </Text>
+              <Text
+                onPress={() => setIsInstructionsShow(!isInstructionsShow)}
+                style={styles.see_more}
+              >
+                See {!isInstructionsShow ? "More" : "Less"}
+              </Text>
+            </View>
+            <NewSetInput exerciseName={exercise.name} />
+          </View>
+        )}
+      />
+    </View>
   );
 }
 
@@ -82,12 +86,11 @@ const styles = StyleSheet.create({
   exercisesContainer: {
     marginTop: 10,
     display: "flex",
-    alignSelf: "center",
+   
     justifyContent: "center",
     gap: 10,
     marginHorizontal: 8,
 
-  
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -102,7 +105,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 10,
     borderRadius: 5,
-
     backgroundColor: "#fff",
     shadowColor: "#000",
     shadowOffset: {

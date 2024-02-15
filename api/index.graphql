@@ -1,9 +1,10 @@
 schema
   @sdl(
     files: [
-      "esercises/index.graphql"
-      "curl/index.graphql"
+      "exercises/index.graphql"
       "curl-01/index.graphql"
+      "mongodb/index.graphql"
+      
     ]
   ) {
   query: Query

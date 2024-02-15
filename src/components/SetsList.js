@@ -18,7 +18,7 @@ const setsQuery = gql`
   }
 `;
 
-export const SetsList = () => {
+export const SetsList = ({ ListHeaderComponent }) => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["sets"],
     queryFn: () => graphqlClient.request(setsQuery),
@@ -34,26 +34,25 @@ export const SetsList = () => {
   const sets = data.sets.documents;
 
   return (
-    <View>
-      <FlatList
-        data={sets}
-        keyExtractor={(item, ind) => item._id}
-        renderItem={({ item }) => (
-          <Text
-            style={{
-              width: "100%",
-              padding: 5,
-              paddingHorizontal: 20,
-              borderCurve: 6,
-              backgroundColor: "white",
-              marginVertical: 5,
-            }}
-          >
-            {item.exercise} {item.reps} * {item.weight}
-          </Text>
-        )}
-      />
-      {/* <StatusBar style="auto" /> */}
-    </View>
+    <FlatList
+      data={sets}
+      ListHeaderComponent={ListHeaderComponent}
+      ListHeaderComponentStyle={{marginBottom:10}}
+      keyExtractor={(item, ind) => item._id}
+      renderItem={({ item }) => (
+        <Text
+          style={{
+            width: "100%",
+            padding: 5,
+            paddingHorizontal: 20,
+            borderCurve: 6,
+            backgroundColor: "white",
+            marginVertical: 5,
+          }}
+        >
+          {item.exercise} {item.reps} * {item.weight}
+        </Text>
+      )}
+    />
   );
 };
