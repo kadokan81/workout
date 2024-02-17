@@ -11,6 +11,7 @@ import { ActivityIndicator } from "react-native";
 import { NewSetInput } from "../components/NewSetInput";
 import { SetsList } from "../components/SetsList";
 
+
 const nameExerciseQuery = gql`
   query exercises($name: String) {
     exercises(name: $name) {
@@ -52,6 +53,7 @@ export default function ExercisePage() {
       />
 
       <SetsList
+      setListName={name}
         ListHeaderComponent={() => (
           <View style={{gap:8}}>
             <View style={styles.exerciseHeader}>

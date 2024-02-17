@@ -4,24 +4,27 @@ import graphqlClient from "../graphqlClient";
 import React from "react";
 import { ActivityIndicator, Text, View } from "react-native";
 import { FlatList } from "react-native";
+import { useLocalSearchParams } from "expo-router";
 
 const setsQuery = gql`
-  query sets {
-    sets {
-      documents {
-        _id
-        exercise
-        reps
-        weight
-      }
+query sets($exercise:String!) {
+  sets(exercise: $exercise) {
+    documents {
+      _id
+      exercise
+      reps
+      weight
     }
   }
+}
 `;
 
-export const SetsList = ({ ListHeaderComponent }) => {
+export const SetsList = ({ ListHeaderComponent ,setListName}) => {
+console.log("🚀 ~ SetsList ~ setListName:", setListName)
+
   const { data, isLoading, error } = useQuery({
-    queryKey: ["sets"],
-    queryFn: () => graphqlClient.request(setsQuery),
+    queryKey: ["sets",setListName],
+    queryFn: () => graphqlClient.request(setsQuery,{exercise:setListName}),
   });
   if (isLoading) {
     return <ActivityIndicator />;
@@ -32,6 +35,7 @@ export const SetsList = ({ ListHeaderComponent }) => {
   }
 
   const sets = data.sets.documents;
+  console.log("🚀 ~ SetsList ~ sets:", sets)
 
   return (
     <FlatList
