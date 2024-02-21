@@ -10,6 +10,8 @@ import ExercisesListItem from "../components/ExercisesListItem";
 import { useQuery } from "@tanstack/react-query";
 import { gql } from "graphql-request";
 import client from "../graphqlClient";
+import { Redirect } from "expo-router";
+import { useAuth } from "../components/provider/AuthContextProvider";
 
 const exerciseQuery = gql`
   query exercises($muscle: String, $name: String) {
@@ -35,6 +37,13 @@ export default function App() {
   }
 
   const { exercises } = data;
+  const {username} = useAuth()
+
+  if(!username){
+    return <Redirect href={'/auth'}/>
+  }
+
+
 
   return (
     <View style={styles.container}>
