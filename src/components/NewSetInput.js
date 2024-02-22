@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import graphqlClient from "../graphqlClient";
 import { useQueryClient } from '@tanstack/react-query'
+import { useAuth } from "./provider/AuthContextProvider";
 
 
 
@@ -24,6 +25,7 @@ const addSetMutationDocument = gql`
 export const NewSetInput = ({exerciseName}) => {
   const [reps, setReps] = useState("");
   const [weight, setWeight] = useState("");
+  const { username} = useAuth();
 
   const queryClient = useQueryClient()
 
@@ -39,6 +41,7 @@ export const NewSetInput = ({exerciseName}) => {
 
   const addSet = () => {
     const newSet = {
+      username:username,
       exercise: exerciseName,
       reps: Number.parseInt(reps),
     };

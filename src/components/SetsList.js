@@ -5,10 +5,11 @@ import React from "react";
 import { ActivityIndicator, Text, View } from "react-native";
 import { FlatList } from "react-native";
 import { useLocalSearchParams } from "expo-router";
+import { useAuth } from "./provider/AuthContextProvider";
 
 const setsQuery = gql`
-query sets($exercise:String!) {
-  sets(exercise: $exercise) {
+query sets($exercise:String!,$username:String!) {
+  sets(exercise: $exercise, username: $username) {
     documents {
       _id
       exercise
@@ -20,11 +21,11 @@ query sets($exercise:String!) {
 `;
 
 export const SetsList = ({ ListHeaderComponent ,setListName}) => {
-console.log("🚀 ~ SetsList ~ setListName:", setListName)
+  const { username} = useAuth();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["sets",setListName],
-    queryFn: () => graphqlClient.request(setsQuery,{exercise:setListName}),
+    queryFn: () => graphqlClient.request(setsQuery,{exercise:setListName, username}),
   });
   if (isLoading) {
     return <ActivityIndicator />;
@@ -35,7 +36,7 @@ console.log("🚀 ~ SetsList ~ setListName:", setListName)
   }
 
   const sets = data.sets.documents;
-  console.log("🚀 ~ SetsList ~ sets:", sets)
+
 
   return (
     <FlatList
