@@ -8,7 +8,7 @@ export default function ExercisesListItem({ item }) {
       <Pressable style={styles.exercisesContainer}>
         <Text style={styles.exercisesName}>{item.name}</Text>
         <Text style={styles.exercisesSubtitle}>
-          {item.muscle.toUpperCase()} | {item.equipment.toUpperCase()}
+          {item.muscle} | {item.equipment}
         </Text>
       </Pressable>
     </Link>
