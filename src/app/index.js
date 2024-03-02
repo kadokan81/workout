@@ -12,8 +12,10 @@ import ExercisesListItem from "../components/ExercisesListItem";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { gql } from "graphql-request";
 import client from "../graphqlClient";
-import { Redirect } from "expo-router";
+import { Redirect, Stack } from "expo-router";
 import { useAuth } from "../components/provider/AuthContextProvider";
+import { useState } from "react";
+import { useDebounce } from "@uidotdev/usehooks";
 
 const exerciseQuery = gql`
   query exercises($muscle: String, $name: String, $offset: Int) {
@@ -26,11 +28,14 @@ const exerciseQuery = gql`
 `;
 
 export default function App() {
+  const [search, setSearch] = useState("");
+  const debouncedSearchTerm = useDebounce(search.trim(), 1000);
+
   const { data, isLoading, error, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ["exercises"],
+      queryKey: ["exercises", debouncedSearchTerm],
       queryFn: ({ pageParam }) =>
-        client.request(exerciseQuery, { offset: pageParam }),
+        client.request(exerciseQuery, { offset: pageParam ,name:debouncedSearchTerm}),
       initialPageParam: 0,
       getNextPageParam: (lastPage, pages) => pages.length * 10,
     });
@@ -60,9 +65,18 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <Stack.Screen
+        options={{
+          headerSearchBarOptions: {
+            placeholder: "Search...",
+            onChangeText: (event) => setSearch(event.nativeEvent.text),
+            hideWhenScrolling:false
+          },
+        }}
+      />
       <FlatList
         data={exercises}
-        contentContainerStyle={{ gap: 7 }}
+        contentContainerStyle={{ gap: 7 ,marginTop:15}}
         keyExtractor={(item, ind) => item.name + ind}
         renderItem={({ item }) => <ExercisesListItem item={item} />}
         onEndReachedThreshold={1}
