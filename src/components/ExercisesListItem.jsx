@@ -9,6 +9,7 @@ export default function ExercisesListItem({ item }) {
         <Text style={styles.exercisesName}>{item.name}</Text>
         <Text style={styles.exercisesSubtitle}>
           {item.muscle} | {item.equipment}
+         
         </Text>
       </Pressable>
     </Link>

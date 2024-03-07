@@ -10,7 +10,7 @@ import graphqlClient from "../graphqlClient";
 import { ActivityIndicator } from "react-native";
 import { NewSetInput } from "../components/NewSetInput";
 import { SetsList } from "../components/SetsList";
-import ProgressGraph from "./ProgressGraph";
+
 
 
 
@@ -78,7 +78,7 @@ export default function ExercisePage() {
                 See {!isInstructionsShow ? "More" : "Less"}
               </Text>
             </View>
-            <ProgressGraph/>
+        
             <NewSetInput exerciseName={exercise.name} />
           </View>
         )}
